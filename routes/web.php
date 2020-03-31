@@ -11,10 +11,6 @@
 |
 */
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
-});
-
 $router->get('/country', [
     'uses' => 'CountryController@index',
     'as' => 'example.index'
