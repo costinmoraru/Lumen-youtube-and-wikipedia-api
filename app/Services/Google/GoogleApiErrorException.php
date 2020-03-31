@@ -10,7 +10,6 @@ use Psr\Http\Message\ResponseInterface;
 class GoogleApiErrorException extends Exception
 {
 
-    /** @var ResponseInterface */
     public ResponseInterface $response;
 
     public function __construct(ResponseInterface $response)

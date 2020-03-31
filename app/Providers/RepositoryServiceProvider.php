@@ -4,7 +4,7 @@
 namespace App\Providers;
 
 
-use App\Repository\Config\CountryRepository;
+use App\Repository\FromConfig\CountryRepository;
 use App\Repository\CountryRepositoryInterface;
 use App\Repository\Eloquent\BaseRepository;
 use App\Repository\Eloquent\GoogleApiRepository;

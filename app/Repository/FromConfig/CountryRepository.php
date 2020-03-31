@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Repository\Config;
+namespace App\Repository\FromConfig;
 
 
 use App\Entities\Country;
@@ -11,7 +11,7 @@ use Illuminate\Support\Collection;
 class CountryRepository implements CountryRepositoryInterface
 {
     /**
-     * @return Collection|mixed
+     * @return Collection
      */
     public function all(): Collection
     {

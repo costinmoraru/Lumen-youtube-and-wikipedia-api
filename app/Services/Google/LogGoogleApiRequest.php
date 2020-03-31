@@ -16,12 +16,10 @@ class LogGoogleApiRequest
 
     private int $statusCode = 0;
 
+    /**
+     * @var mixed
+     */
     private $responseContent;
-
-    public function __construct()
-    {
-
-    }
 
 
     /**

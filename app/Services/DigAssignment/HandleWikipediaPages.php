@@ -12,12 +12,13 @@ use Illuminate\Support\Str;
 class HandleWikipediaPages
 {
 
-    /**
-     * @var WikipediaApiInterface
-     */
     private WikipediaApiInterface $wikipediaApi;
 
 
+    /**
+     * HandleWikipediaPages constructor.
+     * @param WikipediaApiInterface $wikipediaApi
+     */
     public function __construct(WikipediaApiInterface $wikipediaApi)
     {
         $this->wikipediaApi = $wikipediaApi;

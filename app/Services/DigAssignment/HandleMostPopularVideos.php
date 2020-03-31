@@ -15,11 +15,13 @@ use Psr\Http\Message\ResponseInterface;
 class HandleMostPopularVideos
 {
 
-    /**
-     * @var YoutubeApiInterface
-     */
     private YoutubeApiInterface $youtubeApi;
 
+
+    /**
+     * HandleMostPopularVideos constructor.
+     * @param YoutubeApiInterface $youtubeApi
+     */
     public function __construct(YoutubeApiInterface $youtubeApi)
     {
         $this->youtubeApi = $youtubeApi;
@@ -31,6 +33,7 @@ class HandleMostPopularVideos
      */
     public function enrichWithVideos($countries): void
     {
+        // get from cache and count for how many countries we have to call google api
         $countriesToRequestFromYoutube = $countries->count() - $this->getFromCache($countries);
 
         if ($countriesToRequestFromYoutube && Quota::willExceed($countriesToRequestFromYoutube)) {
@@ -46,15 +49,9 @@ class HandleMostPopularVideos
                 // execute successful callback and attach videos to country
                 $promises[$country->getCountryCode()]->then(
                     /// success callback function
-                    function ($response) use ($country) {
-                        if ($response instanceof ResponseInterface) {
-                            return;
-                        }
-                        if (is_array($response)) {
-                            $country->setVideos($response);
-                            $this->storeInCache($country);
-                            return;
-                        }
+                    function ($videos) use ($country) {
+                        $country->setVideos($videos);
+                        $this->storeInCache($country);
                     });
             }
         }
@@ -66,14 +63,15 @@ class HandleMostPopularVideos
     }
 
     /**
-     * Returns the number of countries that have videos in cache
+     * - Returns the number of countries that have videos in cache
+     * - Attach videos to country in collection
      *
-     * @param $countries
+     * @param Collection $countries
      * @return int
      */
-    private function getFromCache($countries): int
+    private function getFromCache(Collection $countries): int
     {
-        $countriesFromCache = 0;
+        $numberOfCountriesInCache = 0;
         foreach ($countries as $country) {
             if (Cache::has('mostPopularYoutubeVideos:' . $country->getCountryCode())) {
                 $videos = [];
@@ -81,13 +79,13 @@ class HandleMostPopularVideos
                 foreach ($videosCache as $video) {
                     $videos[] = VideoFactory::makeVideoFromCache($video);
                 }
-                if (count($videos)) {
+                if ($videos) {
                     $country->setVideos($videos);
-                    $countriesFromCache++;
+                    $numberOfCountriesInCache++;
                 }
             }
         }
-        return $countriesFromCache;
+        return $numberOfCountriesInCache;
     }
 
     /**

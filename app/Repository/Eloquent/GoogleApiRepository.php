@@ -21,7 +21,7 @@ class GoogleApiRepository extends BaseRepository implements GoogleApiRepositoryI
      * @param DateTimeInterface|null $date
      * @return int
      */
-    public function getUsedQuotaDaily($date = null): int
+    public function getUsedQuotaPerDay($date = null): int
     {
         $date = $date ?? Carbon::today();
 

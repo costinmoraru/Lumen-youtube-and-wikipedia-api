@@ -13,8 +13,9 @@ class Quota
      */
     public static function remainingQuota(): int
     {
+        /** @var GoogleApiRepositoryInterface $googleApiRepository */
         $googleApiRepository = app()->make(GoogleApiRepositoryInterface::class);
-        $usedQuota = $googleApiRepository->getUsedQuotaDaily();
+        $usedQuota = $googleApiRepository->getUsedQuotaPerDay();
 
         return (int)config('google.daily_quota') - $usedQuota;
     }
@@ -24,7 +25,7 @@ class Quota
      * @param int $numberOfRequests
      * @return bool
      */
-    public static function willExceed(int $numberOfRequests = 1): bool
+    public static function willExceed(int $numberOfRequests): bool
     {
         return self::remainingQuota() < $numberOfRequests;
     }

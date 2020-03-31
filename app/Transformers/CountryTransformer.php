@@ -15,7 +15,7 @@ class CountryTransformer extends TransformerAbstract
      * @param Country $country
      * @return array
      */
-    public function transform(Country $country)
+    public function transform(Country $country): array
     {
         return [
             'countryCode' => $country->getCountryCode(),

@@ -8,7 +8,6 @@ use App\Services\Google\GoogleApiErrorException;
 use App\Services\Google\LogGoogleApiRequest;
 use Google_Client;
 use GuzzleHttp\Promise\PromiseInterface;
-use GuzzleHttp\Promise\RejectionException;
 use Psr\Http\Message\ResponseInterface;
 
 class YoutubeApi implements YoutubeApiInterface
@@ -79,7 +78,7 @@ class YoutubeApi implements YoutubeApiInterface
                     return $videos;
                 }
 
-                //throw new RejectionException($response->getStatusCode());
+                /// if api returned code !== 200, return exception
                 return new GoogleApiErrorException($response);
             });
     }

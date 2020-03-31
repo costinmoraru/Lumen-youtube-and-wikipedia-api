@@ -48,7 +48,7 @@ $app->singleton(
 
 /*
 |--------------------------------------------------------------------------
-| Register Config Files
+| Register FromConfig Files
 |--------------------------------------------------------------------------
 |
 | Now we will register the "app" configuration file. If the file exists in

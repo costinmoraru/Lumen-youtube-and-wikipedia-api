@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Request;
 
 class CountryController extends Controller
 {
-    /**
-     * @var CountryRepositoryInterface
-     */
+
     private CountryRepositoryInterface $countryRepository;
 
 
@@ -36,13 +34,13 @@ class CountryController extends Controller
      */
     public function index(HandleMostPopularVideos $videosHandler, HandleWikipediaPages $wikipediaHandler)
     {
-        // 1. Get countries
+        // Get countries
         $offset = (int) Request::input('offset', 0);
         $limit = Request::input('limit', null);
-        $limit = $limit ? (int) $limit : null;
+        $limit = (int) $limit ? (int) $limit : null;
         $countries = $this->countryRepository->get($offset, $limit);
 
-        // 2. Enrich countries with most popular Youtube videos
+        // Enrich countries with most popular Youtube videos
         try {
             $videosHandler->enrichWithVideos($countries);
         } catch (GoogleQuotaException $e) {
@@ -53,9 +51,10 @@ class CountryController extends Controller
             );
         }
 
-        // 3. Enrich countries with wikipedia text
+        // Enrich countries with wikipedia text
         $wikipediaHandler->enrichWithWikipediaText($countries);
 
+        // transform countries and return json
         return response()->json(
             fractal($countries, new CountryTransformer())->toArray()['data'],
             200
