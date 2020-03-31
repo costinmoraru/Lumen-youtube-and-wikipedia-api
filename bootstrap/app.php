@@ -60,6 +60,7 @@ $app->singleton(
 $app->configure('app');
 $app->configure('google');
 $app->configure('countries');
+$app->configure('database');
 
 /*
 |--------------------------------------------------------------------------
